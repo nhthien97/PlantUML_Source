@@ -1,0 +1,25 @@
+@startuml
+title Hình 2.8. Trình tự cộng tác của nhóm UC07, UC08, UC09\nĐặt hàng và Thanh toán
+
+hide footbox
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequence {
+  ParticipantBackgroundColor #EDF3FA
+  ParticipantBorderColor #40546A
+  LifeLineBorderColor #8795A5
+  ArrowColor #40546A
+}
+
+participant "Người sử dụng" as ND
+participant "Lớp biên\nUI" as UI
+participant "Lớp điều khiển\nController" as C
+participant "DonHang /\nTonKho" as E
+
+ND -> UI : 1. Xác nhận thông tin đặt
+UI -> C : 2. Gửi yêu cầu có mã chống lặp
+C -> E : 3. Kiểm tra và ghi đơn / giữ kho
+E --> C : 4. Trả mã đơn và trạng thái
+C --> UI : 5. Trả hướng xử lý thanh toán
+UI --> ND : 6. Hiển thị kết quả đơn
+@enduml

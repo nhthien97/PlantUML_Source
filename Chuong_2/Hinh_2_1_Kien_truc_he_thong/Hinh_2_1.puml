@@ -1,0 +1,35 @@
+@startuml
+title Hình 2.1. Kiến trúc mức cao của hệ thống
+top to bottom direction
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam rectangle {
+  BackgroundColor #EDF3FA
+  BorderColor #40546A
+}
+skinparam ArrowColor #40546A
+
+rectangle "LỚP TRÌNH DIỄN\nWebsite khách hàng • Ứng dụng\nSeller Center • Admin Portal" as Presentation
+
+rectangle "LỚP NGHIỆP VỤ\nNgười dùng • Sản phẩm • Giỏ hàng • Đơn hàng • Thanh toán\nKhuyến mãi • Đánh giá • Vận chuyển • Thông báo" as Business
+
+rectangle "LỚP TRUY XUẤT DỮ LIỆU\nRepository / ORM • Giao dịch • Quản lý kết nối" as DataAccess
+
+rectangle "LỚP DỮ LIỆU\nCSDL quan hệ • Search Index • Cache" as Data
+
+rectangle "Cổng thanh toán\nIPaymentGateway" as Payment
+rectangle "Đơn vị vận chuyển\nIShippingService" as Shipping
+rectangle "Dịch vụ SMS/Email\nINotificationService" as Notification
+
+Presentation -down-> Business
+Business -down-> DataAccess
+DataAccess -down-> Data
+
+Business -right-> Payment
+Business -right-> Shipping
+Business -right-> Notification
+
+Payment -[hidden]down-> Shipping
+Shipping -[hidden]down-> Notification
+@enduml

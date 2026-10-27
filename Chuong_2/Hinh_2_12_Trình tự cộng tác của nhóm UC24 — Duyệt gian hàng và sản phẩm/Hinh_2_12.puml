@@ -1,0 +1,25 @@
+@startuml
+title Hình 2.12. Trình tự cộng tác của nhóm UC24\nDuyệt gian hàng và sản phẩm
+
+hide footbox
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequence {
+  ParticipantBackgroundColor #EDF3FA
+  ParticipantBorderColor #40546A
+  LifeLineBorderColor #8795A5
+  ArrowColor #40546A
+}
+
+participant "Người sử dụng" as ND
+participant "Lớp biên\nUI" as UI
+participant "Lớp điều khiển\nController" as C
+participant "GianHang /\nSanPham" as E
+
+ND -> UI : 1. Mở hồ sơ và chọn quyết định
+UI -> C : 2. Gửi mã hồ sơ / phiên bản
+C -> E : 3. Kiểm tra và cập nhật trạng thái
+E --> C : 4. Ghi người duyệt và lý do
+C --> UI : 5. Trả kết quả xét duyệt
+UI --> ND : 6. Hiển thị trạng thái mới
+@enduml

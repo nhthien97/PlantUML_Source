@@ -1,0 +1,33 @@
+@startuml
+title Hình 2.3. Biểu đồ trình tự Đặt hàng và Thanh toán\n(UC07, UC08, UC09)
+
+hide footbox
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequence {
+  ParticipantBackgroundColor #EDF3FA
+  ParticipantBorderColor #40546A
+  LifeLineBorderColor #8795A5
+  ArrowColor #40546A
+}
+
+participant "Khách hàng" as KH
+participant "DatHangUI" as UI
+participant "DatHangController" as C
+participant "DonHang" as DH
+participant "IPaymentGateway\nCổng thanh toán" as PG
+participant "INotificationService\nDịch vụ SMS/Email" as NS
+
+KH -> UI : 1. Xác nhận đặt hàng
+UI -> C : 2. taoDonHang(...)
+C -> DH : 3. Tạo đơn Chờ thanh toán
+DH --> C : 4. Trả mã đơn hàng
+
+C -> PG : 5–6. Yêu cầu / xử lý thanh toán
+PG --> C : 7–8. Trả kết quả thanh toán
+
+C -> DH : 9. Thành công: Chờ xử lý
+C -> NS : 10. Gửi xác nhận đơn hàng
+C --> UI : 11. Trả kết quả
+UI --> KH : 12. Hiển thị xác nhận
+@enduml

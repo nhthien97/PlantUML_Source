@@ -1,0 +1,40 @@
+@startuml
+title Hình 2.4. Biểu đồ hoạt động Đặt hàng và Thanh toán\n(UC07, UC08, UC09)
+
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #40546A
+skinparam activity {
+  BackgroundColor #EDF3FA
+  BorderColor #40546A
+  DiamondBackgroundColor #FFF4D6
+  DiamondBorderColor #40546A
+}
+
+start
+:Xác nhận sản phẩm trong giỏ;
+:Nhập / chọn địa chỉ giao hàng;
+
+repeat
+  :Chọn phương thức thanh toán;
+  :Áp mã giảm giá / Tiki Xu nếu có;
+  :Kiểm tra SKU, tồn kho và tổng tiền;
+
+  if (Thanh toán COD?) then (Có)
+    :Tạo đơn hoặc cập nhật đơn hiện có\nChờ xử lý\nChưa thu tiền;
+  else (Không)
+    :Tạo đơn Chờ thanh toán\nhoặc dùng lại đơn đang chờ;
+    :Gọi cổng thanh toán;
+
+    if (Thanh toán thành công?) then (Có)
+      :Đơn: Chờ xử lý\nThanh toán: Thành công;
+    else (Không)
+      :Thông báo lỗi\nGiữ đơn Chờ thanh toán;
+    endif
+  endif
+
+repeat while (Đơn còn Chờ thanh toán?) is (Có) not (Không)
+
+:Gửi SMS/Email xác nhận đơn hàng;
+stop
+@enduml

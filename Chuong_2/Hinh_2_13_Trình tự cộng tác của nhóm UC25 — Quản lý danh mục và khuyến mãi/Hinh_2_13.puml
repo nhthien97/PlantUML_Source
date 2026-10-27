@@ -1,0 +1,25 @@
+@startuml
+title Hình 2.13. Trình tự cộng tác của nhóm UC25\nQuản lý danh mục và khuyến mãi
+
+hide footbox
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequence {
+  ParticipantBackgroundColor #EDF3FA
+  ParticipantBorderColor #40546A
+  LifeLineBorderColor #8795A5
+  ArrowColor #40546A
+}
+
+participant "Người sử dụng" as ND
+participant "Lớp biên\nUI" as UI
+participant "Lớp điều khiển\nController" as C
+participant "NganhHang /\nVoucher" as E
+
+ND -> UI : 1. Nhập danh mục / khuyến mãi
+UI -> C : 2. Gửi yêu cầu quản trị
+C -> E : 3. Kiểm tra cấu trúc / hiệu lực
+E --> C : 4. Lưu cấu hình hợp lệ
+C --> UI : 5. Trả trạng thái áp dụng
+UI --> ND : 6. Hiển thị dữ liệu đã lưu
+@enduml

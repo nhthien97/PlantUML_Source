@@ -1,0 +1,38 @@
+@startuml
+title Hình 2.5. Các lớp phân tích BCE\ncủa nhóm UC07, UC08, UC09
+
+left to right direction
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ArrowColor #40546A
+skinparam rectangle {
+  BackgroundColor #EDF3FA
+  BorderColor #40546A
+}
+skinparam usecase {
+  BackgroundColor #FFF4D6
+  BorderColor #40546A
+}
+
+rectangle "«actor»\nKhách hàng" as KH
+rectangle "«boundary»\nDatHangUI" as UI
+rectangle "«control»\nDatHangController" as C
+
+rectangle "«boundary»\nIPaymentGateway" as PG
+rectangle "«actor»\nCổng thanh toán" as Payment
+
+rectangle "«boundary»\nINotificationService" as NS
+rectangle "«actor»\nDịch vụ SMS/Email" as Notification
+
+usecase "«entity»\nDonHang (Order)" as DH
+
+KH --> UI
+UI --> C
+C --> PG
+PG --> Payment
+C --> NS
+NS --> Notification
+C -down-> DH
+
+PG -[hidden]down-> NS
+@enduml

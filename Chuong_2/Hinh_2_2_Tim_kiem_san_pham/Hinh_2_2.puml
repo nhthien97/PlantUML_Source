@@ -1,0 +1,32 @@
+@startuml
+title Hình 2.2. Biểu đồ trình tự Tìm kiếm sản phẩm (UC03)
+
+hide footbox
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequence {
+  ParticipantBackgroundColor #EDF3FA
+  ParticipantBorderColor #40546A
+  LifeLineBorderColor #8795A5
+  ArrowColor #40546A
+}
+
+participant "«actor»\nKhách hàng" as KH
+participant "«boundary»\nTimKiemSanPhamUI" as UI
+participant "«control»\nTimKiemSanPhamController" as C
+participant "«entity»\nSanPham (Product)" as SP
+
+KH -> UI : 1. Nhập từ khóa / bộ lọc
+UI -> C : 2. timSanPham(...)
+C -> SP : 3. Truy vấn theo điều kiện
+SP --> C : 4. Danh sách và tổng số
+C --> UI : 5. Trả dữ liệu phân trang
+
+alt Có kết quả
+  UI -> UI : 6. Dựng danh sách sản phẩm
+  UI --> KH : 7. Hiển thị danh sách
+else Danh sách rỗng
+  UI -> UI : 6. Tạo thông báo và gợi ý
+  UI --> KH : 7. Hiển thị thông báo
+end
+@enduml

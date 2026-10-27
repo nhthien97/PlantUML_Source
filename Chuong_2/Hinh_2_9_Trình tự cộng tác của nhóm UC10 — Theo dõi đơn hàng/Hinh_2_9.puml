@@ -1,0 +1,25 @@
+@startuml
+title Hình 2.9. Trình tự cộng tác của nhóm UC10\nTheo dõi đơn hàng
+
+hide footbox
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequence {
+  ParticipantBackgroundColor #EDF3FA
+  ParticipantBorderColor #40546A
+  LifeLineBorderColor #8795A5
+  ArrowColor #40546A
+}
+
+participant "Người sử dụng" as ND
+participant "Lớp biên\nUI" as UI
+participant "Lớp điều khiển\nController" as C
+participant "DonHang /\nVanChuyen" as E
+
+ND -> UI : 1. Chọn đơn cần xem
+UI -> C : 2. Gửi yêu cầu xem chi tiết
+C -> E : 3. Đọc đơn và các vận đơn
+E --> C : 4. Trả lịch sử trạng thái
+C --> UI : 5. Trả tiến trình đã tổng hợp
+UI --> ND : 6. Hiển thị mốc và thời gian
+@enduml

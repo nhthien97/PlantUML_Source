@@ -1,0 +1,25 @@
+@startuml
+title Hình 2.10. Trình tự cộng tác của nhóm UC18\nQuản lý sản phẩm
+
+hide footbox
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequence {
+  ParticipantBackgroundColor #EDF3FA
+  ParticipantBorderColor #40546A
+  LifeLineBorderColor #8795A5
+  ArrowColor #40546A
+}
+
+participant "Người sử dụng" as ND
+participant "Lớp biên\nUI" as UI
+participant "Lớp điều khiển\nController" as C
+participant "SanPham /\nSKU /\nTonKho" as E
+
+ND -> UI : 1. Nhập nội dung / biến thể
+UI -> C : 2. Gửi yêu cầu lưu sản phẩm
+C -> E : 3. Kiểm tra quyền và dữ liệu SKU
+E --> C : 4. Lưu phiên bản hợp lệ
+C --> UI : 5. Trả trạng thái / lỗi trường
+UI --> ND : 6. Hiển thị bản đã lưu
+@enduml
