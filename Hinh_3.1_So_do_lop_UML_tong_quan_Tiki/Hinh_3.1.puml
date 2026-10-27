@@ -1,0 +1,219 @@
+ @startuml
+title Sơ đồ lớp tổng quan hệ thống Tiki
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    FontColor Black
+    ArrowColor Black
+}
+
+' =========================
+' 1. LỚP NGƯỜI DÙNG
+' =========================
+abstract class User {
+    userId: String
+    fullName: String
+    email: String
+    phone: String
+    passwordHash: String
+    status: String
+    --
+    login()
+    logout()
+    updateProfile()
+}
+
+class Customer {
+    customerId: String
+    --
+    addToCart()
+    placeOrder()
+    writeReview()
+}
+
+class Seller {
+    sellerId: String
+    sellerName: String
+    --
+    manageProducts()
+    manageOrders()
+    updateInventory()
+}
+
+class Admin {
+    adminId: String
+    --
+    manageUsers()
+    manageCategories()
+    manageSystem()
+}
+
+User <|-- Customer
+User <|-- Seller
+User <|-- Admin
+
+' =========================
+' 2. LỚP CỬA HÀNG
+' =========================
+class Shop {
+    shopId: String
+    shopName: String
+    address: String
+    status: String
+    --
+    createShop()
+    updateShop()
+    getProducts()
+}
+
+Seller "1" -- "1..*" Shop : sở hữu
+
+' =========================
+' 3. LỚP SẢN PHẨM
+' =========================
+class Category {
+    categoryId: String
+    categoryName: String
+    description: String
+    --
+    addCategory()
+    updateCategory()
+}
+
+class Product {
+    productId: String
+    productName: String
+    description: String
+    basePrice: Decimal
+    status: String
+    --
+    createProduct()
+    updateProduct()
+    getDetails()
+}
+
+class SKU {
+    skuId: String
+    skuCode: String
+    price: Decimal
+    --
+    updatePrice()
+    checkAvailability()
+}
+
+class Inventory {
+    inventoryId: String
+    quantity: Integer
+    reservedQuantity: Integer
+    --
+    updateQuantity()
+    reserveStock()
+    releaseStock()
+}
+
+Category "1" -- "0..*" Product : phân loại
+Shop "1" -- "0..*" Product : kinh doanh
+Product "1" *-- "1..*" SKU : có biến thể
+SKU "1" -- "1" Inventory : quản lý tồn kho
+
+' =========================
+' 4. LỚP GIỎ HÀNG
+' =========================
+class Cart {
+    cartId: String
+    createdAt: DateTime
+    --
+    addItem()
+    removeItem()
+    calculateTotal()
+}
+
+class CartItem {
+    cartItemId: String
+    quantity: Integer
+    unitPrice: Decimal
+    --
+    updateQuantity()
+    calculateSubtotal()
+}
+
+Customer "1" -- "1" Cart : sở hữu
+Cart "1" *-- "0..*" CartItem : gồm
+CartItem "*" --> "1" SKU : chọn biến thể
+
+' =========================
+' 5. LỚP ĐƠN HÀNG
+' =========================
+class Order {
+    orderId: String
+    orderDate: DateTime
+    totalAmount: Decimal
+    status: String
+    --
+    createOrder()
+    cancelOrder()
+    updateStatus()
+}
+
+class OrderItem {
+    orderItemId: String
+    quantity: Integer
+    unitPrice: Decimal
+    subtotal: Decimal
+    --
+    calculateSubtotal()
+}
+
+Customer "1" -- "0..*" Order : đặt
+Order "1" *-- "1..*" OrderItem : gồm
+OrderItem "*" --> "1" SKU : tham chiếu
+
+' =========================
+' 6. LỚP THANH TOÁN VÀ VẬN CHUYỂN
+' =========================
+class Payment {
+    paymentId: String
+    method: String
+    amount: Decimal
+    status: String
+    --
+    processPayment()
+    refundPayment()
+}
+
+class Shipping {
+    shippingId: String
+    carrier: String
+    trackingCode: String
+    status: String
+    --
+    createShipment()
+    trackShipment()
+    updateShippingStatus()
+}
+
+Order "1" -- "0..*" Payment : thanh toán
+Order "1" -- "0..1" Shipping : giao hàng
+
+' =========================
+' 7. LỚP ĐÁNH GIÁ
+' =========================
+class Review {
+    reviewId: String
+    rating: Integer
+    comment: String
+    createdAt: DateTime
+    --
+    createReview()
+    updateReview()
+    deleteReview()
+}
+
+Customer "1" -- "0..*" Review : viết
+Product "1" -- "0..*" Review : nhận đánh giá
+
+@enduml
